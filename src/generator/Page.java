@@ -9,10 +9,26 @@ package generator;
  *
  * @author a.kirillov
  */
-public class Page 
-{
-int w;
-int h;
+public class Page {
+
+    private int W;
+
+    public int getWidth() {
+        return W;
+    }
+
+    public void setWidth(int value) {
+        this.W = value;
+    }
+
+    private int H;
+
+    public int getHeight() {
+        return H;
+    }
+
+    public void setHeight(int value) {
+        this.H = value;
+    }
+
 }
-
-

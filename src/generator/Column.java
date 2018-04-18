@@ -11,6 +11,24 @@ package generator;
  */
 public class Column 
 {
-String title;
-int w;
+private String Title;
+public String getTitle()
+{
+    return Title;
+}
+public void setTitle(String value)
+{
+    this.Title=value;
+}
+
+
+private int W;
+public int getWidth()
+{
+    return W;
+}
+public void setWidth(int value)
+{
+    this.W=value;
+}
 }

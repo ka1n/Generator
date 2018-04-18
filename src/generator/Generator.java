@@ -23,63 +23,65 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Generator {
-    private static String print="";
-    private static ArrayList<data> lst = new ArrayList<data>();
+
+    private static String print = "";
+    private static ArrayList<Data> lst = new ArrayList<Data>();
 
     public static void main(String[] args) {
-        ReadXMLFileDOM.readXML(args[0]);
-        readdata(args[1]);
-        ReportPrint(args[2]);
+        ReadXMLFileDOM.readXML("settings.xml");
+        readData("source-data.tsv");
+        ReportPrint("example-report.txt");
     }
 
     public static void ReportPrint(String SavePath) {
-        try
-        {
+        try {
             final BufferedWriter bw = new BufferedWriter(
                     new OutputStreamWriter(
                             new FileOutputStream(SavePath), "UTF-16"));
-        int height=PrintHead();
-        String result;       
-        for (int i = 0; i < lst.size(); i++) {
-            result = builder(String.valueOf(lst.get(i).number),
-                    lst.get(i).date, lst.get(i).username);
-            height+=result.replace("\r\n", "").length()+ReadXMLFileDOM.page.w;
-            if(height/ReadXMLFileDOM.page.w<ReadXMLFileDOM.page.h)
-            {
-                print+=(result);
+            int height = PrintHead();
+            String result;
+            for (int i = 0; i < lst.size(); i++) {
+                result = builder(String.valueOf(lst.get(i).getNumber()),
+                        lst.get(i).getDate(), lst.get(i).getUserName());
+                height += result.replace("\r\n", "").length() + ReadXMLFileDOM.page.getWidth();
+                if (height / ReadXMLFileDOM.page.getWidth() < ReadXMLFileDOM.page.getHeight()) {
+                    print += (result);
+                } else {
+                    print += ("~\r\n");
+                    height = PrintHead();
+                    print += (result);
+                }
+
+                if (i < lst.size()) {
+                    for (int j = 0; j < ReadXMLFileDOM.page.getWidth(); j++) {
+                        print += ("-");
+                    }
+                }
+
+                print += ("\r\n");
             }
-                else
-            {
-                print+=("~\r\n");
-                height=PrintHead();
-                print+=(result);
-            }
-                 
-                if (i < lst.size())
-                    for (int j = 0; j < ReadXMLFileDOM.page.w; j++)
-                        print+=("-");
-            
-           print+=("\r\n");
-        }
-        bw.write(print);
-        bw.close();
-    }
-                catch(IOException ex){
+            bw.write(print);
+            bw.close();
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
-        } 
-    }
-    
-    public static int PrintHead()
-    {
-        String result = builder(ReadXMLFileDOM.settings.get(0).title,
-                ReadXMLFileDOM.settings.get(1).title, ReadXMLFileDOM.settings.get(2).title);
-        print+=(result);
-        for (int i = 0; i < ReadXMLFileDOM.page.w; i++) {
-            print+=("-");   
         }
-        print+="\r\n";
-        return result.length()+ReadXMLFileDOM.page.w-1;
     }
+
+    public static int PrintHead() {
+        String result = builder(
+                ReadXMLFileDOM.settings.get(0).getTitle(),
+                ReadXMLFileDOM.settings.get(1).getTitle(),
+                ReadXMLFileDOM.settings.get(2).getTitle()
+        );
+        
+        print += (result);
+        for (int i = 0; i < ReadXMLFileDOM.page.getWidth(); i++) {
+            print += ("-");
+        }
+        print += "\r\n";
+        return result.length() + ReadXMLFileDOM.page.getWidth() - 1;
+    }
+
     public static String builder(String Column1, String Column2, String Column3) {
         Boolean FlNumber = false;
         Boolean FlDate = false;
@@ -87,39 +89,39 @@ public class Generator {
         String build = "";
         while (true) {
             build += "| ";
-            if (Column1.length() < ReadXMLFileDOM.settings.get(0).w + 1) {
+            if (Column1.length() < ReadXMLFileDOM.settings.get(0).getWidth() + 1) {
                 build += Column1;
-                for (int i = 0; i < ReadXMLFileDOM.settings.get(0).w - Column1.length(); i++) {
+                for (int i = 0; i < ReadXMLFileDOM.settings.get(0).getWidth() - Column1.length(); i++) {
                     build += " ";
                 }
                 FlNumber = true;
                 Column1 = "";
             } else {
 
-                build += Column1.subSequence(0, ReadXMLFileDOM.settings.get(0).w);
-                Column1 = Column1.substring(ReadXMLFileDOM.settings.get(0).w);
+                build += Column1.subSequence(0, ReadXMLFileDOM.settings.get(0).getWidth());
+                Column1 = Column1.substring(ReadXMLFileDOM.settings.get(0).getWidth());
                 Column1 = Column1.trim();
             }
             build += " | ";
 
-            if (Column2.length() < ReadXMLFileDOM.settings.get(1).w + 1) {
+            if (Column2.length() < ReadXMLFileDOM.settings.get(1).getWidth() + 1) {
                 build += Column2;
-                for (int i = 0; i < ReadXMLFileDOM.settings.get(1).w - Column2.length(); i++) {
+                for (int i = 0; i < ReadXMLFileDOM.settings.get(1).getWidth() - Column2.length(); i++) {
                     build += " ";
                 }
                 FlDate = true;
                 Column2 = "";
             } else {
 
-                build += Column2.subSequence(0, ReadXMLFileDOM.settings.get(1).w);
-                Column2 = Column2.substring(ReadXMLFileDOM.settings.get(1).w);
+                build += Column2.subSequence(0, ReadXMLFileDOM.settings.get(1).getWidth());
+                Column2 = Column2.substring(ReadXMLFileDOM.settings.get(1).getWidth());
                 Column2 = Column2.trim();
             }
             build += " | ";
 
-            if (Column3.length() < ReadXMLFileDOM.settings.get(2).w + 1) {
+            if (Column3.length() < ReadXMLFileDOM.settings.get(2).getWidth() + 1) {
                 build += Column3.trim();
-                for (int i = 0; i < ReadXMLFileDOM.settings.get(2).w - Column3.length(); i++) {
+                for (int i = 0; i < ReadXMLFileDOM.settings.get(2).getWidth() - Column3.length(); i++) {
                     build += " ";
                 }
                 build += " |\r\n";
@@ -127,8 +129,8 @@ public class Generator {
                 Column3 = "";
 
             } else {
-                build += Column3.subSequence(0, ReadXMLFileDOM.settings.get(2).w);
-                Column3 = Column3.substring(ReadXMLFileDOM.settings.get(2).w);
+                build += Column3.subSequence(0, ReadXMLFileDOM.settings.get(2).getWidth());
+                Column3 = Column3.substring(ReadXMLFileDOM.settings.get(2).getWidth());
                 build += " |\r\n";
                 Column3 = Column3.trim();
             }
@@ -139,7 +141,7 @@ public class Generator {
         return build;
     }
 
-    public static void readdata(String DataPath) {
+    public static void readData(String DataPath) {
         try {
             final BufferedReader br = new BufferedReader(
                     new InputStreamReader(
@@ -147,10 +149,10 @@ public class Generator {
             String nextString;
 
             while ((nextString = br.readLine()) != null) {
-                data d = new data();
-                d.number = Integer.parseInt(nextString.split("\t")[0]);
-                d.date = nextString.split("\t")[1];
-                d.username = nextString.split("\t")[2];
+                Data d = new Data();
+                d.setNumber(Integer.parseInt(nextString.split("\t")[0]));
+                d.setDate(nextString.split("\t")[1]);
+                d.setUserName(nextString.split("\t")[2]);
                 lst.add(d);
             }
             br.close();

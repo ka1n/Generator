@@ -47,12 +47,12 @@ public class ReadXMLFileDOM {
                 Node node = nodeList.item(i);
                 if (Node.ELEMENT_NODE == node.getNodeType()) {
                     Element element = (Element) node;
-                    page.w=Integer.parseInt(element
+                    page.setWidth(Integer.parseInt(element
                             .getElementsByTagName("width").item(0)
-                            .getTextContent());
-                    page.h=Integer.parseInt(element
+                            .getTextContent()));
+                    page.setHeight(Integer.parseInt(element
                             .getElementsByTagName("height").item(0)
-                            .getTextContent());
+                            .getTextContent()));
 
                     
                 }
@@ -66,12 +66,12 @@ public class ReadXMLFileDOM {
                 Node node = nodeListColumns.item(i);
                 if (Node.ELEMENT_NODE == node.getNodeType()) {
                     Element element = (Element) node;
-                    s.title=element
+                    s.setTitle(element
                             .getElementsByTagName("title").item(0)
-                            .getTextContent();
-                    s.w=Integer.parseInt(element
-                            .getElementsByTagName("width").item(0)
                             .getTextContent());
+                    s.setWidth(Integer.parseInt(element
+                            .getElementsByTagName("width").item(0)
+                            .getTextContent()));
                     settings.add(s);
                    
                     
