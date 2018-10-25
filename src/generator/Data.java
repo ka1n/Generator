@@ -10,35 +10,34 @@ package generator;
  * @author a.kirillov
  */
 public class Data {
-private int Number;
-public int getNumber()
-{
-    return Number;
-}
-public void setNumber(int value)
-{
-    this.Number=value;
+
+    private int Number;
+
+    public int getNumber() {
+        return this.Number;
+    }
+
+    public void setNumber(int value) {
+        this.Number = value;
+    }
+
+    private String Date;
+
+    public String getDate() {
+        return this.Date;
+    }
+
+    public void setDate(String value) {
+        this.Date = value;
+    }
+
+    private String UserName;
+
+    public String getUserName() {
+        return this.UserName;
+    }
+    public void setUserName(String value){
+        this.UserName=value;
+    }
 }
 
-
-private String Date;
-public String getDate()
-{
-    return Date;
-}
-public void setDate(String value)
-{
-    this.Date=value;
-}
-
-
-private String UserName;
-public String getUserName()
-{
-    return UserName;
-}
-public void setUserName(String value)
-{
-    this.UserName=value;
-}
-}
